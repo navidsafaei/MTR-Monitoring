@@ -75,6 +75,7 @@ list-ip:
 This file contains a list of destination IP addresses or hostnames that you want to monitor with MTR (My Traceroute). Each destination should be on a separate line. In this example, three destinations are listed: www.example1.com, www.example2.com, and www.example3.com. You can modify this file to include your desired destinations.
 
 mtr-exporter.sh:
+
 This shell script is responsible for executing the MTR command and exporting the results to InfluxDB for monitoring. Here's a breakdown of its functionalities:
 
 **INTERVAL**: This variable represents the interval (in seconds) at which MTR will be executed to monitor the destinations. In this example, the interval is set to 60 seconds.
@@ -85,6 +86,7 @@ The **monitor_mtr** function is responsible for executing MTR for each destinati
 The script checks if the mtr command is installed. If not found, it displays an error message and exits. Otherwise, it enters a continuous loop where MTR is executed for each destination at the specified interval.
 
 saving-data.py:
+
 This Python script is responsible for parsing the MTR JSON output and saving the relevant data to InfluxDB. Let's understand the different sections of the script:
 
 **get_cmd_arguments**: This function uses the argparse module to parse command-line arguments. It retrieves the InfluxDB host and port values provided when executing the script.
@@ -92,7 +94,7 @@ The main function is the entry point of the script. It establishes a connection 
 
 The MTR JSON data is read from the standard input using json.load(sys.stdin).
 The destination and current time are extracted from the MTR data.
-The HubEntry class is defined as a subclass of SeriesHelper from the influxdb module. It represents the data to be stored in InfluxDB and defines the series name, fields, and tags.
+The **HubEntry** class is defined as a subclass of SeriesHelper from the influxdb module. It represents the data to be stored in InfluxDB and defines the series name, fields, and tags.
 The script iterates through the hubs in the MTR data and extracts relevant information such as loss percentage, sent packets, last latency, average latency, best latency, worst latency, and standard deviation.
 If the hub name is "???", it is skipped as it represents private hubs.
 The data is modified if needed to ensure proper sorting when there are more than nine hops.
