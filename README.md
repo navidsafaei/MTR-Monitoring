@@ -3,7 +3,9 @@ Monitoring MTR of destitations with Influxdb and Grafana
 
 Ensure that you have InfluxDB , python installed and running. InfluxDB is a high-performance time-series database used for storing monitoring data. You can download InfluxDB from the official website and follow the installation instructions specific to your operating system.The project uses Python and some additional libraries. Make sure you have Python 3.x installed on your system. You'll also need the following Python libraries:
 influxdb: This library provides the necessary functionality to connect to and interact with InfluxDB. Install it using the command: 
-``` pip install influxdb ```
+``` 
+pip install influxdb
+```
 
 1) Login to your InfluxDB and write these commands:
 
