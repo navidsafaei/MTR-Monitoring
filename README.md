@@ -62,3 +62,43 @@ systemctl start mtr-exporter.service
 6) Add DataSource in Grafana
 7) Make Grafana Dashboards.
 
+
+=========================================================================================
+
+Explain Codes:
+your-influxdb-host: Replace this with the IP address or hostname of your InfluxDB server.
+www.example1.com, www.example2.com, www.example3.com: Replace these with the desired hostnames or IP addresses you want to monitor.
+
+Certainly! Let's go through the codes and provide explanations for each section.
+
+list-ip:
+This file contains a list of destination IP addresses or hostnames that you want to monitor with MTR (My Traceroute). Each destination should be on a separate line. In this example, three destinations are listed: www.example1.com, www.example2.com, and www.example3.com. You can modify this file to include your desired destinations.
+
+mtr-exporter.sh:
+This shell script is responsible for executing the MTR command and exporting the results to InfluxDB for monitoring. Here's a breakdown of its functionalities:
+
+**INTERVAL**: This variable represents the interval (in seconds) at which MTR will be executed to monitor the destinations. In this example, the interval is set to 60 seconds.
+**INFLUXDB_HOST**: This variable holds the IP address or hostname of the InfluxDB server where the monitoring data will be stored.
+**INFLUXDB_PORT**: This variable specifies the port number for the InfluxDB server.
+The **monitor_mtr** function is responsible for executing MTR for each destination listed in list-ip. It reads each line from the file, resolves the hostname to an IP address, and then runs MTR using the IP address. The MTR results are piped to the saving-data.py script, which exports the data to InfluxDB.
+
+The script checks if the mtr command is installed. If not found, it displays an error message and exits. Otherwise, it enters a continuous loop where MTR is executed for each destination at the specified interval.
+
+saving-data.py:
+This Python script is responsible for parsing the MTR JSON output and saving the relevant data to InfluxDB. Let's understand the different sections of the script:
+
+**get_cmd_arguments**: This function uses the argparse module to parse command-line arguments. It retrieves the InfluxDB host and port values provided when executing the script.
+The main function is the entry point of the script. It establishes a connection to the InfluxDB server using the provided host, port, username, and password.
+
+The MTR JSON data is read from the standard input using json.load(sys.stdin).
+The destination and current time are extracted from the MTR data.
+The HubEntry class is defined as a subclass of SeriesHelper from the influxdb module. It represents the data to be stored in InfluxDB and defines the series name, fields, and tags.
+The script iterates through the hubs in the MTR data and extracts relevant information such as loss percentage, sent packets, last latency, average latency, best latency, worst latency, and standard deviation.
+If the hub name is "???", it is skipped as it represents private hubs.
+The data is modified if needed to ensure proper sorting when there are more than nine hops.
+An instance of HubEntry is created for each hub, and the data is added to InfluxDB.
+The script keeps track of existing entries to avoid duplicates.
+Finally, the changes are committed to InfluxDB using HubEntry.commit(client=client).
+You need to ensure that the InfluxDB host, port, username, and password are correctly provided in the script to establish a connection and store the MTR data.
+
+That's a high-level overview of the code. It allows you to monitor multiple destinations using MTR and store the results in InfluxDB for further analysis and visualization.
