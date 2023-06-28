@@ -6,7 +6,7 @@ influxdb: This library provides the necessary functionality to connect to and in
 ``` pip install influxdb ```
 
 1) Login to your InfluxDB and write these commands:
-2) 
+
 ```
 >CREATE DATABASE mtr
 >USE mtr
