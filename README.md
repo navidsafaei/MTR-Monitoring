@@ -6,6 +6,7 @@ influxdb: This library provides the necessary functionality to connect to and in
 ``` pip install influxdb ```
 
 1) Login to your InfluxDB and write these commands:
+2) 
 ```
 >CREATE DATABASE mtr
 >USE mtr
@@ -14,18 +15,25 @@ influxdb: This library provides the necessary functionality to connect to and in
 ```
 2) Create a bash script for collect data mtr, for example the name of file is mtr-exporter.sh in folder /opt/mtr-project and put these script into those file have you created. in this scenario all files will put in folder /opt/mtr-project
 
-``` # mkdir -p /opt/mtr-project ```
-``` # vi /opt/mtr-project/mtr-exporter.sh ```
+``` 
+# mkdir -p /opt/mtr-project
+```
+```
+# vi /opt/mtr-project/mtr-exporter.sh
+```
 
 Put the scrip str-exporter.sh and save.
 
-``` # chmod +x /opt/mtr-project/mtr_exporter.sh ```
+``` 
+# chmod +x /opt/mtr-project/mtr_exporter.sh
+```
 
 3) Create List of IP Destination that you will monitor. For example, www.example1.com
 ``` # vi /opt/mtr-project/list-ip ```
 4) Create a python script for export data mtr into Influxdb database, for example the name of file saving-data.py and put these script into your have you created.
 
 5) Create a linux service mtr-exporter, the example service name is mtr-exporter, create a file mtr-exporter.service in folder /lib/systemd/system
+
 ```
 [Unit]
 Description=mtr exporter
@@ -38,8 +46,12 @@ ExecStart=/bin/bash /opt/mtr-project/mtr-export.sh
 [Install]
 WantedBy=multi-user.target
 ```
-``` systemctl daemon-reload ```
-``` systemctl start mtr-exporter.service ```
+``` 
+systemctl daemon-reload
+```
+``` 
+systemctl start mtr-exporter.service
+```
 
 6) Add DataSource in Grafana
 7) Make Grafana Dashboards.
